@@ -539,7 +539,7 @@ class Share {
     this.ctx.font = "30px Arial";
     this.ctx.fillStyle = '#aaa';
     this.ctx.textAlign = 'right';
-    this.ctx.fillText("isitoveryet.ch",1030,1040);
+    this.ctx.fillText(window.location.host + (window.location.pathname !== '/' ? window.location.pathname : ''),1030,1040);
     this.ctx.textAlign = 'left';
 
     // Progress
