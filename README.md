@@ -3,7 +3,7 @@
 
 Tired of your military or civil service? Track the progress of your recurit training/school or repetition course with this simple tool.
 
-Either use [isitoveryet.ch](https://isitoveryet.kolleeeg.ch) directly or spin up your own server and self host the tool there.
+Either use [isitoveryet.kolleeeg.ch](https://isitoveryet.kolleeeg.ch) directly or spin up your own server and self host the tool there.
 
 ![Screenshot](./screenshot.png)
 
