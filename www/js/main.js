@@ -113,6 +113,24 @@ class Progress {
       this.startAutoUpdate();
     });
 
+    this.dom.progressBar.addEventListener('touchmove', (e) => {
+      if (e.touches.length == 0) return;
+      const weekDayIndex = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY).closest('.day')?.getAttribute('data-week-day-index');
+      if(!weekDayIndex) return;
+
+      const weekDay = this.weekDays[parseInt(weekDayIndex)];
+      if(!weekDay) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      weekDay.setProgressForCoordinates(e.touches[0].clientX, e.touches[0].clientY);
+    });
+
+    this.dom.progressBar.addEventListener('touchend', e => {
+      if (!this.isReady()) return;
+      this.startAutoUpdate();
+    });
+
     // Reset
     this.dom.action.reset.addEventListener('click', () => {
       this.reset();
@@ -200,7 +218,7 @@ class Progress {
         weekElement.classList.toggle('extra', endOfWeek < this.startDate || this.endDate < startOfWeek);
       }
 
-      const weekDay = new WeekDay(this, new Date(currentDate))
+      const weekDay = new WeekDay(this, this.weekDays.length, new Date(currentDate))
       this.weekDays.push(weekDay);
       weekElement.appendChild(weekDay.getDom());
 
@@ -325,8 +343,9 @@ class WeekDay {
   static SHORT =  ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
   static LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  constructor(progress, date) {
+  constructor(progress, index, date) {
     this.progress = progress;
+    this.index = index;
     this.startDate = date.getBeginningOfDay();
     this.endDate = date.getEndOfDay();
 
@@ -342,6 +361,7 @@ class WeekDay {
 
     this.dom.root = document.createElement('div');
     this.dom.root.classList.add('day');
+    this.dom.root.setAttribute('data-week-day-index', this.index);
     this.dom.root.innerHTML = `
       <span class="date"></span>
       <span class="progress"></span>
@@ -362,17 +382,19 @@ class WeekDay {
     this.dom.service.style.left = `${100 * (this.getServiceStart().getTime() - this.startDate.getTime()) / this.getDuration()}%`
     this.dom.service.style.right = `${100 * (this.endDate.getTime() - this.getServiceEnd().getTime()) / this.getDuration()}%`
 
-    this.dom.root.addEventListener('mousemove', e => {
-      const element = this.dom.root.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (e.clientX - element.x) / element.width));
-
-      const dateAtMouse = new Date(this.startDate.getTime() + this.getDuration() * progress);
-
-      this.progress.stopAutoUpdate();
-      this.progress.update(dateAtMouse);
-    })
+    this.dom.root.addEventListener('mousemove', e => this.setProgressForCoordinates(e.clientX, e.clientY));
 
     return this.dom.root;
+  }
+
+  setProgressForCoordinates(x, y) {
+    const element = this.dom.root.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, (x - element.x) / element.width));
+
+    const dateAtCoordinates = new Date(this.startDate.getTime() + this.getDuration() * progress);
+
+    this.progress.stopAutoUpdate();
+    this.progress.update(dateAtCoordinates);
   }
 
   getDuration() {
