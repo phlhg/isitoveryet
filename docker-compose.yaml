@@ -1,0 +1,16 @@
+services:
+  app:
+    container_name: isitoveryet.localhost
+    build: .
+    volumes:
+      - ./www:/var/www/html/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.isitoveryet.rule=Host(`isitoveryet.localhost`)"
+      - "traefik.http.routers.isitoveryet.entrypoints=web"
+    networks:
+      - globaldocker
+    
+networks:
+  globaldocker:
+    external: true

@@ -1,0 +1,427 @@
+* { padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; box-sizing: border-box;}
+
+body { padding: 40px; background: #111; }
+
+a { color: inherit; text-decoration: none; cursor: pointer; }
+a:hover { text-decoration: underline; }
+
+.time {
+  position: relative;
+  display: block;
+  color: #fff;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.stats {
+  position: sticky;
+  display: block;
+  top: 0;
+  padding-top: 30px;
+  background: #111;
+  z-index: 10;
+}
+
+.stats::after { 
+  content: '';
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(0deg, rgba(17, 17, 17, 0), rgba(17, 17, 17, 0.25), rgba(17, 17, 17, 1)); 
+}
+
+.stats > .row { position: relative; display: flex; margin-top: 10px; }
+.stats > .row:first-child { margin-top: 0; }
+
+.settings {
+  position: relative;
+  display: flex;
+  margin-top: 10px;
+  margin-top: 0;
+  transform: translateY(0);
+  transition: all 500ms ease-in-out;
+  width: calc(100% + 10px);
+}
+
+body.prepare .settings { margin-top: 40vh; }
+body.inital .settings { transition: none !important; }
+
+.stats {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 500ms ease-in-out;
+  width: calc(100% + 10px);
+}
+
+body.prepare .stats { opacity: 0; transform: translateY(40px); visibility: hidden; }
+body.inital .stats { transition: none !important; }
+
+.stats > .row > .stat,
+.settings > .setting {
+  position: relative;
+  display: block;
+  border-radius: 4px;
+  background: #222;
+  color: #fff;
+  padding: 20px;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.stats > .row > .stat > .title,
+.settings > .setting > .title,
+.settings > .setting > label {
+  position: relative;
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  margin-bottom: 5px;
+}
+
+.stats > .row > .stat > .content {
+  position: relative;
+  display: block;
+  font-size: 80px;
+  line-height: 90px;
+  font-weight: bold;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings > .setting input {
+  background: none;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
+  width: auto;
+}
+
+.settings > .setting select {
+  background: none;
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  appearance: none;
+  display: inline-block;
+  width: auto;
+}
+
+.settings > .setting .select .preview {
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+.settings > .setting .select .preview:after {
+  content: ', ';
+}
+
+.settings > .setting .input-flex {
+  position: relative;
+  display: flex;
+}
+
+.progress-bar {
+  position: relative;
+  display: block;
+  width: calc(100% + 10px);
+  transform: translateY(0);
+  transition: all 250ms ease-in-out;
+  margin-top: 30px;
+}
+
+body.prepare .progress-bar { opacity: 0; transform: translateY(80px); visibility: hidden;}
+body.inital .progress-bar { transition: none !important; }
+
+.progress-bar > .week {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.progress-bar > .week > .day {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: #333;
+  border-radius: 4px;
+  margin-right: 10px;
+  padding: 10px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.progress-bar > .week > .day > .date {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  font-size: 11px;
+  line-height: 16px;
+  z-index: +10;
+  padding: 7px 0 0 10px;
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+.progress-bar > .week > .day > .date .break {
+  display: block;
+}
+
+.progress-bar > .week > .day > .progress {
+  position: absolute; 
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  width: 0;
+  z-index: +1;
+  border-bottom: 2px solid #aaa;
+}
+
+.progress-bar > .week > .day:not(.upcoming):not(.passed) > .progress::after {
+  content: '';
+  position: absolute;
+  display: block;
+  right: 0;
+  top: 0;
+  width: 2px;
+  height: 50px;
+  background: #f00;
+}
+
+.progress-bar > .week > .day.passed .progress {
+  width: 100% !important;
+}
+
+.progress-bar > .week > .day.upcoming .progress {
+  width: 0% !important;
+}
+
+.progress-bar > .week > .day > .service {
+  position: absolute; 
+  display: block;
+  top: 0;
+  height: 100%;
+  background-image: url(../img/taz.png);
+  background-position: center center;
+  background-size: 20vw 20vw;
+  opacity: 0.5;
+}
+
+
+.progress-bar > .week > .day > .time {
+  position: absolute;
+  display: block;
+  top: 0;
+  height: 50px;
+  width: 1px;
+  background: #111;
+  transform: translateX(-50%);
+}
+
+.progress-bar > .week > .day > .time.dawn {
+  left: 25%;
+}
+
+.progress-bar > .week > .day > .time.noon {
+  left: 50%;
+}
+
+.progress-bar > .week > .day > .time.dusk {
+  left: 75%;
+}
+
+.select {
+  position: relative;
+  display: inline-block;
+}
+
+.select > select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0;
+  overflow: hidden;
+  appearance: none;
+}
+
+footer {
+  position: relative;
+  display: block;
+  color: #999;
+  text-align: center;
+  font-size: 10px;
+  line-height: 15px;
+  margin-top: 50px;
+}
+
+footer > .placeholder {
+  display: inline-block;
+  width: 10px;
+}
+
+.share {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: #fff;
+  color: #111;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 200px;
+  transition: 250ms ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+body.prepare .share { opacity: 0; visibility: hidden; }
+
+dialog { 
+  position: fixed;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  box-sizing: border-box;
+  z-index: 100;
+  color: #fff;
+  outline: none;
+  border: none;
+  min-width: 400px;
+  max-width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 250ms ease-in-out;
+  background: transparent;
+}
+
+dialog[open] {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%);
+}
+
+dialog::after {
+  content: '';
+  position: fixed;
+  top: -100vh;
+  left: -100vw;
+  width: 200vw;
+  height: 200vw;
+  background: rgba(0,0,0,0.75);
+  z-index: -1;
+}
+
+dialog .inner {
+  position: relative;
+  display: block;
+  z-index: +10;
+  padding: 20px;
+  background: #222;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100%;
+}
+
+dialog h3 {
+  margin-bottom: 10px;
+}
+
+dialog p {
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+dialog img {
+  max-width: 500px;
+  border: 1px solid #111;
+  border-radius: 4px;
+}
+
+dialog h3 > .close {
+  line-height: inherit;
+  vertical-align: middle;
+  float: right;
+  color: #aaa;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+}
+
+dialog h3 > .close:hover {
+  color: #fff;
+}
+
+.material-icons {
+  font-size: inherit !important;
+}
+
+@media screen and (max-width: 800px) {
+  body { padding: 10px; }
+
+  .settings { flex-wrap: wrap; width: calc(100% + 5px); }
+  .settings > .setting { margin-right: 5px; padding: 15px; width: calc(50% - 5px); margin-bottom: 5px; }
+  .settings > .setting > .title, 
+  .settings > .setting > label { font-size: 9px; line-height: 12px; margin-bottom: 3px; }
+  .settings > .setting input,
+  .settings > .setting select,
+  .settings > .setting .select .preview { font-size: 14px; line-height: 16px; }
+
+  .stats { margin-top: 0; position: sticky; top: 0; z-index: 10; width: 100%; background: #111; padding-top: 10px; }
+  .stats::after { height: 10px; }
+
+  .stats > .row { width: calc(100% + 5px); margin-top: 5px;  }
+  .stats > .row > .stat { margin-right: 5px; padding: 10px; width: 100%; }
+  .stats > .row > .stat > .title { font-size: 9px; line-height: 12px; margin-bottom: 3px; }
+  .stats > .row > .stat > .content { font-size: 22px; line-height: 25px; }
+
+  .progress-bar { margin-top: 15px; width: 100%; }
+  .progress-bar > .week { margin-bottom: 10px; flex-wrap: wrap; height: unset; padding-right: -5px; }
+  .progress-bar > .week.extra { display: none; }
+  .progress-bar > .week > .day { margin-right: 0; height: 30px; margin-bottom: 5px; }
+  .progress-bar > .week > .day > .date { font-size: 9px; line-height: 12px;}
+  .progress-bar > .week > .day > .date .break { display: inline; }
+
+  .share { bottom: 10px; right: 10px; }
+  
+  dialog {
+    top: 50vh;
+    left: 0;
+    transform: translate(0, 0);
+    width: 100vw;
+    min-width: unset;
+  }
+
+  dialog .inner { box-shadow: none; }
+
+  dialog[open] { transform: translate(0, -50%) }
+  dialog::after { background: #222; left: 0; width: 100vw; top: -100vh; height: 200vh;}
+
+  dialog img { max-width: unset; width: 100%; }
+}
+

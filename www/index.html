@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Is it over yet?</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=1">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="css/main.css" rel="stylesheet" />
+  </head>
+  <body class="prepare inital">
+    <div class="settings">
+      <div class="setting">
+        <label>Start of Service</label>
+        <input id="service-start" type="datetime-local" />
+      </div>
+      <div class="setting">
+        <label>End of Service</label>
+        <input id="service-end" type="datetime-local" />
+      </div>
+      <div class="setting">
+        <span class="title">Weekend from</span>
+        <span class="input-flex">
+          <select id="holiday-start-day"></select>
+          <input id="holiday-start-time" type="time"/>
+        </span>
+      </div>
+      <div class="setting">
+        <span class="title">Weekend to</span>
+        <span class="input-flex">
+          <select id="holiday-end-day"></select>
+          <input id="holiday-end-time" type="time"/>
+        </span>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="row">
+        <div class="stat total-progress">
+          <span class="title">Progress (Total)</span>
+          <span class="content">0.00%</span>
+        </div>
+        <div class="stat service-progress">
+          <span class="title">Progress (Service)</span>
+          <span class="content">0.00%</span>
+        </div>
+        <div class="stat day-progress">
+          <span class="title">Days</span>
+          <span class="content">0 / 0</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="stat days-remaining">
+          <span class="title">Days</span>
+          <span class="content">0 d</span>
+        </div>
+        <div class="stat hours-remaining">
+          <span class="title">Hours</span>
+          <span class="content">0 h</span>
+        </div>
+        <div class="stat minutes-remaining">
+          <span class="title">Minutes</span>
+          <span class="content">0 min</span>
+        </div>
+        <div class="stat seconds-remaining">
+          <span class="title">Seconds</span>
+          <span class="content">0 sec</span>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar"></div>
+    <footer>
+      © <a href="https://phlhg.ch" target="_blank">Philippe Hugo</a> 2026
+      <span class="placeholder"></span>
+      <a href="https://github.com/phlhg/isitoveryet/">Github</a>
+      <span class="placeholder"></span>
+      <a id="showSeconds" title="Calm your dashboard by hiding the sconds stat">Show seconds</a>
+      <span class="placeholder"></span>
+      <a id="reset" title="Reset the application to the initial state">Reset</a>
+    </footer>
+    <span class="share material-symbols">share</span>
+    <dialog>
+      <div class="inner">
+        <h3>Share <span class="material-symbols close">close</span></h3>
+        <p>Share your progress</p>
+        <img src=""/>
+      </div>
+    </dialog>
+
+  </body>
+</html>
