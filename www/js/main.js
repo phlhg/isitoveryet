@@ -119,7 +119,8 @@ class Progress {
 
     this.dom.progressBar.addEventListener('touchmove', (e) => {
       if (e.touches.length == 0) return;
-      const weekDayIndex = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY).closest('.day')?.getAttribute('data-week-day-index');
+
+      const weekDayIndex = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)?.closest('.day')?.getAttribute('data-week-day-index');
       if(!weekDayIndex) return;
 
       const weekDay = this.weekDays[parseInt(weekDayIndex)];
@@ -499,25 +500,20 @@ class Share {
     this.dom.close.addEventListener('click', this.closeDialog.bind(this, null));
   }
 
-  share() {
+  async share() {
     if(!this.progress.isReady()) return;
 
-    if(!navigator.share) return this.openDiaog();
+    const blob = await (await fetch(this.getDataUrl())).blob();
+    const file = new File([blob], 'share.png', { type: 'image/png' });
 
-    console.log(this.getDataUrl());
-
-    const byteCharacters = atob(this.getDataUrl().split(',')[1]);
-
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
+    const data = {
+      files: [file],
+      title: 'Is it over yet?',
+      text: 'Check out the progress of the service.',
     }
 
-    const byteArray = new Uint8Array(byteNumbers);
-
-    const file = new File(byteArray, 'share.png')
-
-    navigator.share({ files: [file] });
+    if(!navigator.canShare(data)) return this.openDiaog();
+    navigator.share(data);
   }
 
   openDiaog() {
@@ -604,7 +600,7 @@ class Share {
     this.ctx.font = "bold 120px Arial";
     this.ctx.fillText(`${remaining.days}d ${remaining.hours}h ${remaining.minutes}m`,50,900);
 
-    return this.dom.canvas.toDataURL();
+    return this.dom.canvas.toDataURL("image/png");
   }
 }
 

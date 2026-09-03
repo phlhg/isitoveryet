@@ -409,7 +409,7 @@ dialog h3 > .close:hover {
   .progress-bar > .week > .day > .date { font-size: 9px; line-height: 12px;}
   .progress-bar > .week > .day > .date .break { display: inline; }
 
-  .share { bottom: 10px; right: 10px; }
+  .share { bottom: 30px; right: 30px; }
   
   dialog {
     top: 50vh;
