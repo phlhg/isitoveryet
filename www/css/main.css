@@ -106,6 +106,8 @@ body.inital .stats { transition: none !important; }
   width: auto;
 }
 
+.settings > .setting input.missing { color: #666; }
+
 .settings > .setting select {
   background: none;
   color: #fff;

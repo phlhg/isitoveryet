@@ -91,20 +91,24 @@ class Progress {
       this.run();
     });
 
-    // Service Start
-    this.dom.input.start.addEventListener('change', e => {
-      if(!Date.parse(this.dom.input.start.value)) return;
-      this.startDate = new Date(this.dom.input.start.value);
-      localStorage.setItem('service-start', this.startDate.getTime());
-      this.run();
-    });
+    ['change', 'blur'].forEach(event => {
+      // Service Start
+      this.dom.input.start.addEventListener(event, e => {
+        if(!Date.parse(this.dom.input.start.value)) return;
+        this.startDate = new Date(this.dom.input.start.value);
+        localStorage.setItem('service-start', this.startDate.getTime());
+        this.dom.input.start.classList.remove('missing');
+        this.run();
+      });
 
-    // Service End
-    this.dom.input.end.addEventListener('change', e => {
-      if(!Date.parse(this.dom.input.end.value)) return;
-      this.endDate = new Date(this.dom.input.end.value);
-      localStorage.setItem('service-end', this.endDate.getTime());
-      this.run();
+      // Service End
+      this.dom.input.end.addEventListener(event, e => {
+        if(!Date.parse(this.dom.input.end.value)) return;
+        this.endDate = new Date(this.dom.input.end.value);
+        localStorage.setItem('service-end', this.endDate.getTime());
+        this.dom.input.end.classList.remove('missing');
+        this.run();
+      });
     });
 
     // Progress Bar
@@ -154,7 +158,10 @@ class Progress {
     if (this.startDate) {
       this.dom.input.start.value = dateToString(this.startDate);
     } else {
-      this.dom.input.start.value = `${(new Date()).getFullYear()}-01-01T09:30`;
+      const date = new Date().getFirstDayOfWeek();
+      date.setHours(9, 30, 0, 0);
+      this.dom.input.start.value = dateToString(date);
+      this.dom.input.start.classList.add('missing');
     }
 
     // Service End
@@ -164,7 +171,11 @@ class Progress {
     if (this.endDate) {
       this.dom.input.end.value = dateToString(this.endDate);
     } else {
-      this.dom.input.end.value = `${(new Date()).getFullYear()}-01-01T16:00`;
+      const date = new Date().getLastDayOfWeek(3);
+      date.setDate(date.getDate() - 2); // 2 days before end of week
+      date.setHours(16, 0, 0, 0);
+      this.dom.input.end.value = dateToString(date);
+      this.dom.input.end.classList.add('missing');
     }
 
 
@@ -689,9 +700,10 @@ Date.prototype.getPreviousWeek = function(weeks) {
   return d;
 }
 
-Date.prototype.getNextWeek = function() {
+Date.prototype.getNextWeek = function(weeks) {
+  weeks = weeks ?? 1;
   const d = new Date(this);
-  d.setDate(d.getDate() + 7)
+  d.setDate(d.getDate() + 7 * weeks)
   return d;
 }
 
