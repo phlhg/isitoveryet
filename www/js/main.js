@@ -506,14 +506,11 @@ class Share {
     const blob = await (await fetch(this.getDataUrl())).blob();
     const file = new File([blob], 'share.png', { type: 'image/png' });
 
-    const data = {
-      files: [file],
-      title: 'Is it over yet?',
-      text: 'Check out the progress of the service.',
-    }
+    const data = { files: [file], text: 'Check out the progress of the service.' };
 
-    if(!navigator.canShare(data)) return this.openDiaog();
-    navigator.share(data);
+    if(navigator.share && navigator.canShare(data)) return navigator.share(data);
+
+    return this.openDiaog();
   }
 
   openDiaog() {
