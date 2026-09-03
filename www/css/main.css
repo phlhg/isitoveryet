@@ -224,7 +224,7 @@ body.inital .progress-bar { transition: none !important; }
   height: 100%;
   background-image: url(../img/taz.png);
   background-position: center center;
-  background-size: 20vw 20vw;
+  background-size: 500px 500px;
   opacity: 0.5;
 }
 
