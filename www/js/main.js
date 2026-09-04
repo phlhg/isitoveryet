@@ -511,18 +511,18 @@ class Share {
   async share() {
     if(!this.progress.isReady()) return;
 
-    const blob = await (await fetch(this.getDataUrl())).blob();
+    const blob = await (await fetch(await this.getDataUrl())).blob();
     const file = new File([blob], 'share.png', { type: 'image/png' });
 
     const data = { files: [file], text: 'Check out the progress of the service.' };
 
     if(navigator.share && navigator.canShare(data)) return navigator.share(data);
 
-    return this.openDiaog();
+    return await this.openDiaog();
   }
 
-  openDiaog() {
-    this.dom.img.src = this.getDataUrl();
+  async openDiaog() {
+    this.dom.img.src = await this.getDataUrl();
     this.dom.dialog.setAttribute('open', '');
   }
 
@@ -530,14 +530,20 @@ class Share {
     this.dom.dialog.removeAttribute('open');
   }
 
-  getDataUrl() {
+  async getDataUrl() {
     const dateNow = new Date();
 
     this.ctx.fillStyle = "#111";
     this.ctx.fillRect(0, 0, 1080, 1080);
 
+    // taz background
+    const img = await new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = '/img/taz.png'; });
+    this.ctx.globalAlpha = 0.2;
+    this.ctx.drawImage(img, 0, 0, 1080, 1080);
+    this.ctx.globalAlpha = 1;
+
     // brown
-    this.ctx.fillStyle = "#5e3828";
+    this.ctx.fillStyle = "#483722";
     this.ctx.beginPath();
     this.ctx.moveTo(1080, 980);
     this.ctx.lineTo(1080, 830);
@@ -546,7 +552,7 @@ class Share {
     this.ctx.fill();
 
     // beige
-    this.ctx.fillStyle = "#ad8851";
+    this.ctx.fillStyle = "#62553b";
     this.ctx.beginPath();
     this.ctx.moveTo(1080, 980);
     this.ctx.lineTo(1080, 380);
@@ -555,7 +561,7 @@ class Share {
     this.ctx.fill();
 
     // green
-    this.ctx.fillStyle = "#324714";
+    this.ctx.fillStyle = "#443f26";
     this.ctx.beginPath();
     this.ctx.moveTo(1080, 980);
     this.ctx.lineTo(1080, 700);
@@ -563,10 +569,10 @@ class Share {
     this.ctx.closePath();
     this.ctx.fill();
 
-    this.ctx.fillStyle = "#222";
+    this.ctx.fillStyle = "#111";
     this.ctx.fillRect(0, 980, 1080, 1080);
 
-    this.ctx.fillStyle = '#c33';
+    this.ctx.fillStyle = '#fff';
     this.ctx.font = "bold 30px Arial";
     this.ctx.fillText("Is it over yet?",50,1040);
 
