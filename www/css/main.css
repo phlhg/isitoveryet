@@ -1,6 +1,6 @@
 * { padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; box-sizing: border-box;}
 
-body { padding: 40px; background: #111; }
+body { padding: 40px; background: #111; overflow-x: hidden; }
 
 a { color: inherit; text-decoration: none; cursor: pointer; }
 a:hover { text-decoration: underline; }
@@ -69,6 +69,7 @@ body.inital .stats { transition: none !important; }
   padding: 20px;
   width: 100%;
   margin-right: 10px;
+  overflow: hidden;
 }
 
 .stats > .row > .stat > .title,
@@ -145,6 +146,8 @@ body.inital .stats { transition: none !important; }
   transform: translateY(0);
   transition: all 250ms ease-in-out;
   margin-top: 30px;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body.prepare .progress-bar { opacity: 0; transform: translateY(80px); visibility: hidden;}
@@ -169,6 +172,8 @@ body.inital .progress-bar { transition: none !important; }
   padding: 10px;
   overflow: hidden;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .progress-bar > .week > .day > .date {
@@ -182,6 +187,8 @@ body.inital .progress-bar { transition: none !important; }
   padding: 7px 0 0 10px;
   color: #fff;
   text-shadow: 0 0 2px rgba(0,0,0,0.5);
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .progress-bar > .week > .day > .date .break {
@@ -405,8 +412,8 @@ dialog h3 > .close:hover {
   .progress-bar { margin-top: 15px; width: 100%; }
   .progress-bar > .week { margin-bottom: 10px; flex-wrap: wrap; height: unset; padding-right: -5px; }
   .progress-bar > .week.extra { display: none; }
-  .progress-bar > .week > .day { margin-right: 0; height: 30px; margin-bottom: 5px; }
-  .progress-bar > .week > .day > .date { font-size: 9px; line-height: 12px;}
+  .progress-bar > .week > .day { margin-right: 0; height: 20px; margin-bottom: 4px; padding: 4px; }
+  .progress-bar > .week > .day > .date { font-size: 8px; line-height: 12px; padding: 4px; }
   .progress-bar > .week > .day > .date .break { display: inline; }
 
   .share { bottom: 30px; right: 30px; }

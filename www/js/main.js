@@ -11,6 +11,7 @@ class Progress {
 
     this.weekDays = [];
     this.interval = -1;
+    this.touchStart = null;
 
     this.dom = {}
     // this.dom.time = document.querySelector('.time')
@@ -117,8 +118,14 @@ class Progress {
       this.startAutoUpdate();
     });
 
+    this.dom.progressBar.addEventListener('touchstart', e => {
+      if (e.touches.length == 0) return;
+      this.touchStart = Date.now();
+    });
+
     this.dom.progressBar.addEventListener('touchmove', (e) => {
       if (e.touches.length == 0) return;
+      if (Date.now() - this.touchStart < 500) return;
 
       const weekDayIndex = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)?.closest('.day')?.getAttribute('data-week-day-index');
       if(!weekDayIndex) return;
@@ -133,6 +140,7 @@ class Progress {
 
     this.dom.progressBar.addEventListener('touchend', e => {
       if (!this.isReady()) return;
+      this.touchStart = null;
       this.startAutoUpdate();
     });
 
